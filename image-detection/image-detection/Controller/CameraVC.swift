@@ -24,6 +24,7 @@ class CameraVC: UIViewController {
     @IBOutlet weak var identificationLbl: UILabel!
     @IBOutlet weak var confidenceLbl: UILabel!
     @IBOutlet weak var cameraView: UIView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     
     //MARK: Var
@@ -45,6 +46,7 @@ class CameraVC: UIViewController {
         
         previewLayer.frame = cameraView.bounds
         speechSynth.delegate = self
+        activityIndicator.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -93,6 +95,12 @@ class CameraVC: UIViewController {
     }
     
     @objc func didTapCameraView() {
+        //Disable tap on camera view until speech is over
+        self.cameraView.isUserInteractionEnabled = false
+        self.activityIndicator.isHidden = false
+        self.activityIndicator.startAnimating()
+        
+        
     //Create a preview size of the image capture == easier to display in previewImageView
         let settings = AVCapturePhotoSettings()
         //.first is the default picture, not liveview or hdr version
@@ -189,6 +197,9 @@ extension CameraVC: AVCapturePhotoCaptureDelegate {
 
 extension CameraVC: AVSpeechSynthesizerDelegate {
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        
+        //When speech is finished, enable tap
+        self.cameraView.isUserInteractionEnabled = true
+        self.activityIndicator.isHidden = true
+        self.activityIndicator.stopAnimating()
     }
 }

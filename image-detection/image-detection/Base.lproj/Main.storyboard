@@ -19,6 +19,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jfe-ga-EYo" customClass="RoundedShadowImageView" customModule="image_detection" customModuleProvider="target">
+                                <rect key="frame" x="314" y="712" width="80" height="140"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="140" id="BCE-nO-bbb"/>
+                                    <constraint firstAttribute="width" constant="80" id="rKk-eB-z2C"/>
+                                </constraints>
+                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WtD-xw-8Yz" customClass="RoundedShadowView" customModule="image_detection" customModuleProvider="target">
                                 <rect key="frame" x="20" y="84" width="374" height="70"/>
                                 <subviews>
@@ -63,13 +70,10 @@
                                     <action selector="flashBtnWasPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="HHR-se-FIT"/>
                                 </connections>
                             </button>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jfe-ga-EYo" customClass="RoundedShadowImageView" customModule="image_detection" customModuleProvider="target">
-                                <rect key="frame" x="314" y="712" width="80" height="140"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="140" id="BCE-nO-bbb"/>
-                                    <constraint firstAttribute="width" constant="80" id="rKk-eB-z2C"/>
-                                </constraints>
-                            </imageView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="fuj-7I-Pyo">
+                                <rect key="frame" x="335.5" y="763.5" width="37" height="37"/>
+                                <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -82,12 +86,15 @@
                             <constraint firstItem="kiz-ah-hiH" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="UBP-to-1ip"/>
                             <constraint firstAttribute="bottom" secondItem="kiz-ah-hiH" secondAttribute="bottom" id="XvN-dz-3x2"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="jfe-ga-EYo" secondAttribute="bottom" constant="10" id="YcV-uP-fpZ"/>
+                            <constraint firstItem="fuj-7I-Pyo" firstAttribute="centerX" secondItem="jfe-ga-EYo" secondAttribute="centerX" id="hEM-q7-4Qt"/>
+                            <constraint firstItem="fuj-7I-Pyo" firstAttribute="centerY" secondItem="jfe-ga-EYo" secondAttribute="centerY" id="mJV-qL-ZAh"/>
                             <constraint firstItem="WtD-xw-8Yz" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="40" id="ruC-uS-Uck"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="jfe-ga-EYo" secondAttribute="trailing" constant="20" id="wY0-vb-NU4"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="fuj-7I-Pyo" id="U1f-Vd-dYH"/>
                         <outlet property="cameraView" destination="kiz-ah-hiH" id="bzq-0s-vnP"/>
                         <outlet property="capturedImageView" destination="jfe-ga-EYo" id="dSz-qR-NtW"/>
                         <outlet property="confidenceLbl" destination="glR-3i-Hd6" id="mL3-Vu-7WL"/>

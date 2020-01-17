@@ -23,6 +23,7 @@ class CameraVC: UIViewController {
     var captureSession: AVCaptureSession!
     var cameraOutput: AVCapturePhotoOutput!
     var previewLayer: AVCaptureVideoPreviewLayer!
+    var photoData: Data?
     
     //MARK: Functions
     override func viewDidLoad() {
@@ -37,6 +38,10 @@ class CameraVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        //Tap gesture to take a photo
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapCameraView))
+        tapGesture.numberOfTapsRequired = 1
+        cameraView.addGestureRecognizer(tapGesture)
         
         //Instantiate session and select resolution
         captureSession = AVCaptureSession()
@@ -70,14 +75,37 @@ class CameraVC: UIViewController {
                 
                 //Start capturing camera feed
                 captureSession.startRunning()
-                
             }
-            
         } catch {
             debugPrint(error.localizedDescription)
         }
     }
+    
+    @objc func didTapCameraView() {
+    //Create a preview size of the image capture == easier to display in previewImageView
+        let settings = AVCapturePhotoSettings()
+        //.first is the default picture, not liveview or hdr version
+        let previewPixelType = settings.availablePreviewPhotoPixelFormatTypes.first!
+        let previewFormat = [kCVPixelBufferPixelFormatTypeKey as String: previewPixelType, kCVPixelBufferWidthKey as String: 160, kCVPixelBufferHeightKey as String: 160]
+        
+        settings.previewPhotoFormat = previewFormat
+        
+        cameraOutput.capturePhoto(with: settings, delegate: self)
+    }
+}
 
 
+extension CameraVC: AVCapturePhotoCaptureDelegate {
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        if let error = error {
+            debugPrint(error)
+        } else {
+            //Save the file of the photo capture
+            photoData = photo.fileDataRepresentation()
+            //Create a UIImage from photoData
+            let image = UIImage(data: photoData!)
+            self.capturedImageView.image = image
+        }
+    }
 }
 

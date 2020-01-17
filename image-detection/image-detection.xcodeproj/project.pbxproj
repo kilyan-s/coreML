@@ -16,6 +16,7 @@
 		314CE3D623D24FC000F52B2E /* RoundedShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314CE3D523D24FC000F52B2E /* RoundedShadowView.swift */; };
 		314CE3D823D2510300F52B2E /* RoundedShadowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314CE3D723D2510300F52B2E /* RoundedShadowButton.swift */; };
 		314CE3DA23D2513D00F52B2E /* RoundedShadowImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314CE3D923D2513D00F52B2E /* RoundedShadowImageView.swift */; };
+		314CE3DC23D2616000F52B2E /* SqueezeNet.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 314CE3DB23D2616000F52B2E /* SqueezeNet.mlmodel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		314CE3D523D24FC000F52B2E /* RoundedShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedShadowView.swift; sourceTree = "<group>"; };
 		314CE3D723D2510300F52B2E /* RoundedShadowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedShadowButton.swift; sourceTree = "<group>"; };
 		314CE3D923D2513D00F52B2E /* RoundedShadowImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedShadowImageView.swift; sourceTree = "<group>"; };
+		314CE3DB23D2616000F52B2E /* SqueezeNet.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = SqueezeNet.mlmodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 		314CE3D423D24C5800F52B2E /* Ressources */ = {
 			isa = PBXGroup;
 			children = (
+				314CE3DB23D2616000F52B2E /* SqueezeNet.mlmodel */,
 			);
 			path = Ressources;
 			sourceTree = "<group>";
@@ -182,6 +185,7 @@
 				314CE3D623D24FC000F52B2E /* RoundedShadowView.swift in Sources */,
 				314CE3D823D2510300F52B2E /* RoundedShadowButton.swift in Sources */,
 				314CE3C223D24C2800F52B2E /* CameraVC.swift in Sources */,
+				314CE3DC23D2616000F52B2E /* SqueezeNet.mlmodel in Sources */,
 				314CE3BE23D24C2800F52B2E /* AppDelegate.swift in Sources */,
 				314CE3DA23D2513D00F52B2E /* RoundedShadowImageView.swift in Sources */,
 				314CE3C023D24C2800F52B2E /* SceneDelegate.swift in Sources */,

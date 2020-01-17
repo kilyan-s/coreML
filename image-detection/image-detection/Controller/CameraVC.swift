@@ -33,6 +33,8 @@ class CameraVC: UIViewController {
     var photoData: Data?
     var flashCtrlState: FlashState = .off
     
+    var speechSynth = AVSpeechSynthesizer()
+    
     //MARK: Functions
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +44,7 @@ class CameraVC: UIViewController {
         super.viewDidAppear(animated)
         
         previewLayer.frame = cameraView.bounds
+        speechSynth.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -115,15 +118,28 @@ class CameraVC: UIViewController {
         for classification in results {
             print(classification)
             if classification.confidence < 0.5 {
-                self.identificationLbl.text = "I am not sure what this is. Please try again."
+                let unknownObjectMsg = "I am not sure what this is. Please try again."
+                self.identificationLbl.text = unknownObjectMsg
                 self.confidenceLbl.text = ""
+                synthesizeSpeech(fromString: unknownObjectMsg)
                 break
             } else {
-                self.identificationLbl.text = classification.identifier
-                self.confidenceLbl.text = "CONFIDENCE: \(Int(classification.confidence * 100))%"
+                let identification = classification.identifier
+                let confidence = Int(classification.confidence * 100)
+                self.identificationLbl.text = identification
+                self.confidenceLbl.text = "CONFIDENCE: \(confidence)%"
+                
+                let speakString = "This look like a \(identification). I am \(confidence)% sure."
+                synthesizeSpeech(fromString: speakString)
+                
                 break
             }
         }
+    }
+    
+    func synthesizeSpeech(fromString string: String) {
+        let speechUtterance = AVSpeechUtterance(string: string)
+        speechSynth.speak(speechUtterance)
     }
     
     //MARK: Actions
@@ -171,3 +187,8 @@ extension CameraVC: AVCapturePhotoCaptureDelegate {
     }
 }
 
+extension CameraVC: AVSpeechSynthesizerDelegate {
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        
+    }
+}

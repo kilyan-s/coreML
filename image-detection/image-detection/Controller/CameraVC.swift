@@ -8,6 +8,13 @@
 
 import UIKit
 import AVFoundation
+import CoreML
+import Vision
+
+enum FlashState {
+    case on
+    case off
+}
 
 class CameraVC: UIViewController {
     //MARK: Outlets
@@ -24,6 +31,7 @@ class CameraVC: UIViewController {
     var cameraOutput: AVCapturePhotoOutput!
     var previewLayer: AVCaptureVideoPreviewLayer!
     var photoData: Data?
+    var flashCtrlState: FlashState = .off
     
     //MARK: Functions
     override func viewDidLoad() {
@@ -90,7 +98,45 @@ class CameraVC: UIViewController {
         
         settings.previewPhotoFormat = previewFormat
         
+        //Set flash mode 
+        if flashCtrlState == .off {
+            settings.flashMode = .off
+        } else {
+            settings.flashMode = .on
+        }
+        
         cameraOutput.capturePhoto(with: settings, delegate: self)
+    }
+    
+    func resultsMethod(request: VNRequest, error: Error?) {
+        guard let results = request.results as? [VNClassificationObservation] else { return }
+        
+        //loop through each classification found in the image
+        for classification in results {
+            print(classification)
+            if classification.confidence < 0.5 {
+                self.identificationLbl.text = "I am not sure what this is. Please try again."
+                self.confidenceLbl.text = ""
+                break
+            } else {
+                self.identificationLbl.text = classification.identifier
+                self.confidenceLbl.text = "CONFIDENCE: \(Int(classification.confidence * 100))%"
+                break
+            }
+        }
+    }
+    
+    //MARK: Actions
+    
+    @IBAction func flashBtnWasPressed(_ sender: Any) {
+        switch flashCtrlState {
+        case .on:
+            flashBtn.setTitle("FLASH OFF", for: .normal)
+            flashCtrlState = .off
+        case .off:
+            flashBtn.setTitle("FLASH ON", for: .normal)
+            flashCtrlState = .on
+        }
     }
 }
 
@@ -102,6 +148,22 @@ extension CameraVC: AVCapturePhotoCaptureDelegate {
         } else {
             //Save the file of the photo capture
             photoData = photo.fileDataRepresentation()
+            
+            do {
+                //Create a vision model using SqueezeNet model
+                let model = try VNCoreMLModel(for: SqueezeNet().model)
+                //Create a request from the model
+                let request = VNCoreMLRequest(model: model, completionHandler: resultsMethod)
+                //create a handler for data: image data
+                let handler = VNImageRequestHandler(data: photoData!)
+                
+                //Perform the request
+                try handler.perform([request])
+                
+            } catch {
+                debugPrint(error)
+            }
+            
             //Create a UIImage from photoData
             let image = UIImage(data: photoData!)
             self.capturedImageView.image = image
